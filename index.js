@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
 const app = express()
@@ -19,6 +19,20 @@ async function run (){
     try{
         await client.connect();
         const inventoryCollection = client.db('bicycleWar').collection('inventory');
+
+        app.get('/inventory', async(req, res) =>{
+            const query = {};
+            const cursor = inventoryCollection.find(query);
+            const inventory = await cursor.toArray();
+            res.send(inventory);
+        });
+
+        app.get('/inventory/:id', async(req, res) =>{
+            const id = req.params.id;
+            const query= {_id: ObjectId(id)}
+            const inventory = inventoryCollection.findOne(query);
+            res.send(inventory);
+        })
     }
     finally{
 
