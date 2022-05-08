@@ -71,6 +71,10 @@ app.get('/', (req,res) =>{
     res.send('Bicyle warehouse server')
 });
 
+app.get('/hero', (req, res) =>{
+    res.send('hero meets hero ku')
+})
+
 app.listen(port, () =>{
     console.log('Listening to port', port);
 })
